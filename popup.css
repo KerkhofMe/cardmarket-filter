@@ -346,11 +346,17 @@ small.inline {
 }
 
 .flag {
-  font-size: 15px;
-  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 20px;
-  text-align: center;
+  height: 15px;
   flex: none;
+}
+
+.flag .fi {
+  font-size: 16px;
+  line-height: 1;
 }
 
 .ms-empty {
@@ -409,8 +415,12 @@ small.inline {
 }
 
 .lang .flag {
-  font-size: 16px;
   width: auto;
+  height: auto;
+}
+
+.lang .flag .fi {
+  font-size: 18px;
 }
 
 /* Toggle switch */

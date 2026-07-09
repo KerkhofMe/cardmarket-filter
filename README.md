@@ -15,6 +15,12 @@ A Chrome extension (Manifest V3) that filters offers on **cardmarket.com**.
 
 Settings are applied live (via `chrome.storage`) and re-evaluated on page changes and navigation within the site.
 
+## Cross-Platform Compatibility
+
+- ✅ **Works on Windows, macOS, and Linux**
+- ✅ **Flag icons display correctly on all platforms** using SVG (no broken emoji on Windows!)
+- ✅ All features tested on Chrome/Edge/Brave
+
 ## Installation (unpacked)
 
 1. Open Chrome and go to `chrome://extensions`.

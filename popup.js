@@ -142,12 +142,12 @@ function buildLangOptions() {
     btn.className = "lang-option";
     btn.dataset.lang = lang.code;
     btn.setAttribute("role", "option");
-    const flag = document.createElement("span");
-    flag.className = "flag";
-    flag.textContent = flagEmoji(lang.flag);
+    const flagWrapper = document.createElement("span");
+    flagWrapper.className = "flag";
+    flagWrapper.appendChild(createFlagElement(lang.flag));
     const name = document.createElement("span");
     name.textContent = lang.label;
-    btn.appendChild(flag);
+    btn.appendChild(flagWrapper);
     btn.appendChild(name);
     container.appendChild(btn);
   }
@@ -157,7 +157,9 @@ function buildLangOptions() {
 function applyLanguage(code) {
   LANG = CM_TRANSLATIONS[code] ? code : "en";
   const active = CM_LANGUAGES.find((l) => l.code === LANG) || CM_LANGUAGES[0];
-  $("langFlag").textContent = flagEmoji(active.flag);
+  const langFlag = $("langFlag");
+  langFlag.innerHTML = "";
+  langFlag.appendChild(createFlagElement(active.flag));
   applyTranslations();
   updateSummary();
   updateCountryLabel();
@@ -187,22 +189,29 @@ function buildCountryOptions() {
     cb.type = "checkbox";
     cb.value = country.name;
     cb.className = "country-cb";
-    cb.dataset.flag = flagEmoji(country.code);
-    const flag = document.createElement("span");
-    flag.className = "flag";
-    flag.textContent = cb.dataset.flag;
+    cb.dataset.code = country.code;
+    const flagWrapper = document.createElement("span");
+    flagWrapper.className = "flag";
+    flagWrapper.appendChild(createFlagElement(country.code));
     label.appendChild(cb);
-    label.appendChild(flag);
+    label.appendChild(flagWrapper);
     label.appendChild(document.createTextNode(country.name));
     container.appendChild(label);
   }
 }
 
-// Converts an ISO 3166-1 alpha-2 code (e.g. "NL") to its flag emoji.
+// Creates a flag element using flag-icons CSS (works on Windows/macOS/Linux).
+function createFlagElement(code) {
+  const span = document.createElement("span");
+  span.className = `fi fi-${code.toLowerCase()}`;
+  span.setAttribute("aria-label", code.toUpperCase());
+  span.style.display = "inline-block";
+  return span;
+}
+
+// Fallback for backwards compatibility (creates flag element and returns it).
 function flagEmoji(code) {
-  return code
-    .toUpperCase()
-    .replace(/./g, (c) => String.fromCodePoint(127397 + c.charCodeAt(0)));
+  return createFlagElement(code);
 }
 
 function renderCountrySelection() {
@@ -218,10 +227,15 @@ function updateCountryLabel() {
     document.querySelectorAll("#countryOptions .country-cb:checked")
   );
   const label = $("countryLabel");
-  if (checked.length === 0) label.textContent = t("allCountries");
-  else if (checked.length === 1)
-    label.textContent = `${checked[0].dataset.flag} ${checked[0].value}`;
-  else label.textContent = `${checked.length} ${t("countriesWord")}`;
+  label.innerHTML = "";
+  if (checked.length === 0) {
+    label.textContent = t("allCountries");
+  } else if (checked.length === 1) {
+    label.appendChild(createFlagElement(checked[0].dataset.code));
+    label.appendChild(document.createTextNode(" " + checked[0].value));
+  } else {
+    label.textContent = `${checked.length} ${t("countriesWord")}`;
+  }
 }
 
 function filterCountryOptions(term) {
