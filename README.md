@@ -32,11 +32,14 @@ Settings are applied live (via `chrome.storage`) and re-evaluated on page change
 | `content.js` | Reads offers and hides/dims rows. |
 | `content.css` | Hide/dim effect and count badge. |
 | `popup.html` / `popup.js` / `popup.css` | Settings panel. |
-| `icons/` | Extension icons (16/32/48/128 px) + `icon.svg` source file. |
+| `icons/` | Extension icons (SVG source + PNG files at 16/32/48/128 px). |
 
-**Note:** The PNG icon files (icon-16.png, icon-32.png, icon-48.png, icon-128.png) need to be generated from `icons/icon.svg`. You can use any SVG-to-PNG converter or:
+### Regenerating Icons (Optional)
+
+The PNG icon files are included in the repository. If you want to regenerate them from `icons/icon.svg`:
+
+**macOS:**
 ```bash
-# On macOS with qlmanage and sips:
 cd icons
 qlmanage -t -s 1024 -o . icon.svg
 mv icon.svg.png icon-temp.png
@@ -46,6 +49,17 @@ sips -z 48 48 icon-temp.png --out icon-48.png
 sips -z 128 128 icon-temp.png --out icon-128.png
 rm icon-temp.png
 ```
+
+**Windows/Linux (with ImageMagick):**
+```bash
+cd icons
+magick icon.svg -resize 16x16 icon-16.png
+magick icon.svg -resize 32x32 icon-32.png
+magick icon.svg -resize 48x48 icon-48.png
+magick icon.svg -resize 128x128 icon-128.png
+```
+
+**Or use an online converter:** Upload `icon.svg` to [cloudconvert.com](https://cloudconvert.com/svg-to-png) or similar.
 
 ## Adjusting selectors
 

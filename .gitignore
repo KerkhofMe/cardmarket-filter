@@ -1,8 +1,5 @@
 # Cardmarket Offer Filter - gitignore
 
-# Generated PNG icons (generate from icon.svg)
-icons/*.png
-
 # macOS
 .DS_Store
 
