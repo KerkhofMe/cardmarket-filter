@@ -15,6 +15,18 @@ A Chrome extension (Manifest V3) that filters offers on **cardmarket.com**.
 
 Settings are applied live (via `chrome.storage`) and re-evaluated on page changes and navigation within the site.
 
+## Screenshots
+
+### Settings Panel
+<img src="screenshots/Settings1.png" width="340" alt="Settings panel - Display and Auto-load">
+<img src="screenshots/Settings2.png" width="340" alt="Settings panel - Country and Seller filters">
+<img src="screenshots/Settings3.png" width="340" alt="Settings panel - Condition and Price filters">
+
+### Dim Mode in Action
+<img src="screenshots/Dimming.png" alt="Dim mode - Filtered offers are dimmed, matching offers have yellow border">
+
+*Filtered offers are dimmed (gray, low opacity) while matching offers are highlighted with a yellow border for easy scanning.*
+
 ## Cross-Platform Compatibility
 
 - ✅ **Works on Windows, macOS, and Linux**
