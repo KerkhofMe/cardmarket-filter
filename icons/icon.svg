@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1857c4"/>
+      <stop offset="1" stop-color="#0b3d91"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#000" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="128" height="128" rx="28" fill="url(#bg)"/>
+
+  <!-- Playing card (tilted, behind the funnel) -->
+  <g transform="rotate(-14 64 64)">
+    <rect x="34" y="24" width="60" height="80" rx="8" fill="#ffffff" filter="url(#shadow)"/>
+    <path d="M64 42 c 7 -12 24 -2 0 16 c -24 -18 -7 -28 0 -16 z" fill="#e63946"/>
+    <rect x="44" y="80" width="26" height="5" rx="2.5" fill="#c7ced4"/>
+    <rect x="44" y="90" width="18" height="5" rx="2.5" fill="#dbe0e5"/>
+  </g>
+
+  <!-- Filter funnel (foreground) -->
+  <g filter="url(#shadow)">
+    <path d="M40 46 h48 a4 4 0 0 1 3 6.6 L74 74 v22 a4 4 0 0 1 -6 3.3 l-8 -5.3 a4 4 0 0 1 -1.8 -3.3 V74 L37 52.6 A4 4 0 0 1 40 46 z" fill="#ffce00"/>
+    <path d="M40 46 h48 a4 4 0 0 1 3 6.6 L74 74 v22 a4 4 0 0 1 -6 3.3 l-8 -5.3 a4 4 0 0 1 -1.8 -3.3 V74 L37 52.6 A4 4 0 0 1 40 46 z" fill="none" stroke="#b8940a" stroke-width="1.5" stroke-opacity="0.5"/>
+  </g>
+</svg>

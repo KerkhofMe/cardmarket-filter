@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cardmarket Filter</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <div class="title">
+        <img src="icons/icon-32.png" alt="" width="22" height="22" />
+        <div>
+          <h1>Cardmarket Filter</h1>
+          <p id="activeSummary"></p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="ms lang" id="langMs">
+          <button type="button" class="ms-toggle lang-toggle" id="langToggle" aria-haspopup="listbox" aria-expanded="false" data-i18n-title="language" title="Language">
+            <span class="flag" id="langFlag"></span>
+            <span class="ms-caret" aria-hidden="true"></span>
+          </button>
+          <div class="ms-panel lang-panel" id="langPanel" hidden>
+            <div class="ms-options" id="langOptions" role="listbox"></div>
+          </div>
+        </div>
+        <label class="switch" data-i18n-title="filterToggleTitle" title="Filter on/off">
+          <input type="checkbox" id="enabled" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </header>
+
+    <div id="content">
+    <section>
+      <h2 data-i18n="display">Display</h2>
+      <div class="row">
+        <label><input type="radio" name="hideMode" value="hide" /> <span data-i18n="hide">Hide</span></label>
+        <label><input type="radio" name="hideMode" value="dim" /> <span data-i18n="dim">Dim</span></label>
+      </div>
+    </section>
+
+    <section>
+      <div class="toggle-row">
+        <div>
+          <h2 data-i18n="autoLoad">Load all offers automatically</h2>
+          <small class="inline" data-i18n="autoLoadHint">Clicks "Show more results" for you until everything is loaded.</small>
+        </div>
+        <label class="switch" data-i18n-title="autoLoadTitle" title="Load all offers automatically">
+          <input type="checkbox" id="autoLoad" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-i18n="country">Country / location</h2>
+      <div class="row">
+        <label><input type="radio" name="countryMode" value="block" /> <span data-i18n="countryBlock">Hide these countries</span></label>
+        <label><input type="radio" name="countryMode" value="allow" /> <span data-i18n="countryAllow">Show only these countries</span></label>
+      </div>
+      <div class="ms" id="countryMs">
+        <button type="button" class="ms-toggle" id="countryToggle" aria-haspopup="listbox" aria-expanded="false">
+          <span id="countryLabel">All countries</span>
+          <span class="ms-caret" aria-hidden="true"></span>
+        </button>
+        <div class="ms-panel" id="countryPanel" hidden>
+          <input type="text" class="ms-search" id="countrySearch" data-i18n-ph="searchCountry" placeholder="Search country…" autocomplete="off" />
+          <div class="ms-options" id="countryOptions" role="listbox" aria-multiselectable="true"></div>
+        </div>
+      </div>
+      <small data-i18n="countryHint">Choose one or more countries (English names as Cardmarket shows them).</small>
+    </section>
+
+    <section>
+      <div class="toggle-row">
+        <div>
+          <h2 data-i18n="sellerType">Seller type</h2>
+          <small class="inline" data-i18n="professionalHint">Hides professional sellers when off.</small>
+        </div>
+        <label class="switch" data-i18n-title="professionalTitle" title="Show professional sellers">
+          <input type="checkbox" id="professional" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <section>
+      <div class="group-head">
+        <h2 data-i18n="reputation">Reputation / feedback</h2>
+        <div class="group-actions" data-target="reputation">
+          <button type="button" class="link-btn" data-action="all" data-i18n="selectAll">All</button>
+          <button type="button" class="link-btn" data-action="none" data-i18n="selectNone">None</button>
+        </div>
+      </div>
+      <div id="reputation" class="checks"></div>
+      <label><span data-i18n="minSales">Min. number of sales</span> <input type="number" id="minSales" min="0" placeholder="—" /></label>
+      <small data-i18n="reputationHint">Offers without visible reputation are shown, unless a minimum number of sales is set.</small>
+    </section>
+
+    <section>
+      <div class="group-head">
+        <h2 data-i18n="condition">Card condition</h2>
+        <div class="group-actions" data-target="conditions">
+          <button type="button" class="link-btn" data-action="all" data-i18n="selectAll">All</button>
+          <button type="button" class="link-btn" data-action="none" data-i18n="selectNone">None</button>
+        </div>
+      </div>
+      <div id="conditions" class="checks"></div>
+    </section>
+
+    <section>
+      <h2 data-i18n="priceStock">Price &amp; stock</h2>
+      <div class="row">
+        <label><span data-i18n="minPrice">Min. price</span> <input type="number" id="minPrice" step="0.01" min="0" placeholder="—" /></label>
+        <label><span data-i18n="maxPrice">Max. price</span> <input type="number" id="maxPrice" step="0.01" min="0" placeholder="—" /></label>
+      </div>
+      <label><span data-i18n="minStock">Min. items in stock</span> <input type="number" id="minItemCount" min="0" placeholder="—" /></label>
+    </section>
+
+    <section>
+      <h2 data-i18n="blockSellers">Block sellers</h2>
+      <textarea id="sellerBlock" data-i18n-ph="sellerPerLine" placeholder="One seller name per line"></textarea>
+    </section>
+
+    <section>
+      <h2 data-i18n="whitelist">Only these sellers (whitelist)</h2>
+      <textarea id="sellerAllow" data-i18n-ph="sellerPerLine" placeholder="One seller name per line"></textarea>
+      <small data-i18n="whitelistHint">If this field has content, only these sellers are shown.</small>
+    </section>
+
+    <section>
+      <h2 data-i18n="comment">Product comment (text)</h2>
+      <label data-i18n="commentExcludeLabel">Hide if comment contains:</label>
+      <textarea id="commentExclude" data-i18n-ph="wordPerLine" placeholder="One word/phrase per line"></textarea>
+      <label data-i18n="commentIncludeLabel">Show only if comment contains:</label>
+      <textarea id="commentInclude" data-i18n-ph="wordPerLine" placeholder="One word/phrase per line"></textarea>
+      <small data-i18n="commentHint">Searches the comment the seller adds to the offer.</small>
+    </section>
+    </div>
+
+    <footer>
+      <button id="reset" type="button" class="secondary" data-i18n="reset">Reset to defaults</button>
+      <span id="status" role="status" aria-live="polite"></span>
+    </footer>
+
+    <script src="defaults.js"></script>
+    <script src="i18n.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
