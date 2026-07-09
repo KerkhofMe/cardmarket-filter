@@ -7,6 +7,7 @@ A Chrome extension (Manifest V3) that filters offers on **cardmarket.com**.
 - **Multilingual** – choose your preferred language at the top of the settings panel: English (default), Dutch, French, Spanish, German, or Italian, each with flag icon.
 - **Auto-load all offers** – automatically clicks "Show more results" until all offers are loaded (can be disabled).
 - **Country / location** – select one or more countries via multi-select dropdown; hide these countries or show only these countries.
+- **Card language** – filter offers by card language (English, Japanese, German, etc.) with multi-select dropdown.
 - **Seller type** – show or hide professional sellers with a single toggle.
 - **Reputation / feedback** – filter by feedback level (Outstanding … Bad) when visible in the row.
 - **Card condition** – show only desired conditions (MT, NM, EX, GD, LP, PL, PO).
