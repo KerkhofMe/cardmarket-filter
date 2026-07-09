@@ -85,6 +85,7 @@ function mergeDefaults(stored) {
     country: Object.assign({}, CM_DEFAULT_SETTINGS.country, stored.country),
     sellerTypes: Object.assign({}, CM_DEFAULT_SETTINGS.sellerTypes, stored.sellerTypes),
     reputation: Object.assign({}, CM_DEFAULT_SETTINGS.reputation, stored.reputation),
+    cardLanguage: Object.assign({}, CM_DEFAULT_SETTINGS.cardLanguage, stored.cardLanguage),
     sellers: Object.assign({}, CM_DEFAULT_SETTINGS.sellers, stored.sellers),
     comment: Object.assign({}, CM_DEFAULT_SETTINGS.comment, stored.comment)
   });
@@ -103,6 +104,11 @@ function render() {
     .querySelectorAll('input[name="countryMode"]')
     .forEach((r) => (r.checked = r.value === settings.country.mode));
   renderCountrySelection();
+
+  document
+    .querySelectorAll('input[name="languageMode"]')
+    .forEach((r) => (r.checked = r.value === settings.cardLanguage.mode));
+  renderLanguageSelection();
 
   $("professional").checked = settings.sellerTypes.professional !== false;
 
@@ -266,6 +272,72 @@ function closeCountryPanel() {
   $("countryToggle").setAttribute("aria-expanded", "false");
 }
 
+// ---------- Card Language Multi-Select ----------
+function buildLanguageOptions() {
+  const container = $("languageOptions");
+  container.innerHTML = "";
+  for (const lang of CM_CARD_LANGUAGES) {
+    const label = document.createElement("label");
+    label.className = "ms-option";
+    label.setAttribute("role", "option");
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.value = lang;
+    cb.className = "language-cb";
+    label.appendChild(cb);
+    label.appendChild(document.createTextNode(lang));
+    container.appendChild(label);
+  }
+}
+
+function renderLanguageSelection() {
+  const selected = (settings.cardLanguage.list || []).map((s) => s.toLowerCase());
+  document.querySelectorAll("#languageOptions .language-cb").forEach((cb) => {
+    cb.checked = selected.includes(cb.value.toLowerCase());
+  });
+  updateLanguageLabel();
+}
+
+function updateLanguageLabel() {
+  const checked = Array.from(document.querySelectorAll("#languageOptions .language-cb:checked"));
+  const label = $("languageLabel");
+  if (!checked.length) {
+    label.textContent = t("allLanguages");
+  } else if (checked.length === 1) {
+    label.textContent = checked[0].value;
+  } else {
+    label.textContent = `${checked.length} ${t("languagesWord")}`;
+  }
+}
+
+function filterLanguageOptions(term) {
+  const norm = term.toLowerCase();
+  document.querySelectorAll("#languageOptions .ms-option").forEach((opt) => {
+    const text = opt.textContent.toLowerCase();
+    opt.hidden = norm && !text.includes(norm);
+  });
+  const anyVisible = [...document.querySelectorAll("#languageOptions .ms-option")].some((o) => !o.hidden);
+  const container = $("languageOptions");
+  if (!anyVisible) {
+    if (!$("noLanguageMsg")) {
+      const msg = document.createElement("div");
+      msg.id = "noLanguageMsg";
+      msg.className = "no-results";
+      msg.textContent = t("noLanguageFound");
+      container.appendChild(msg);
+    }
+  } else {
+    const msg = $("noLanguageMsg");
+    if (msg) msg.remove();
+  }
+}
+
+function closeLanguagePanel() {
+  $("languageMs").classList.remove("open");
+  $("languagePanel").hidden = true;
+  $("languageToggle").setAttribute("aria-expanded", "false");
+}
+
 function applyEnabledState() {
   document.body.classList.toggle("off", !$("enabled").checked);
 }
@@ -285,6 +357,7 @@ function updateSummary() {
   let count = 0;
 
   if ((settings.country.list || []).length) count++;
+  if ((settings.cardLanguage?.list || []).length) count++;
   if (Object.values(settings.sellerTypes).filter((v) => v === false).length) count++;
   if (Object.values(settings.reputation).filter((v) => v === false).length) count++;
   if ((settings.conditions || []).length && settings.conditions.length < totalConditions) count++;
@@ -329,6 +402,12 @@ function collect() {
     document.querySelectorAll("#countryOptions .country-cb:checked")
   ).map((cb) => cb.value);
 
+  const languageMode =
+    document.querySelector('input[name="languageMode"]:checked')?.value || "allow";
+  const languageList = Array.from(
+    document.querySelectorAll("#languageOptions .language-cb:checked")
+  ).map((cb) => cb.value);
+
   const sellerTypes = {
     private: true,
     commercial: true,
@@ -352,6 +431,7 @@ function collect() {
     lang: LANG,
     autoLoad: $("autoLoad").checked,
     country: { mode: countryMode, list: countryList },
+    cardLanguage: { mode: languageMode, list: languageList },
     sellerTypes,
     reputation,
     conditions,
@@ -395,6 +475,7 @@ function init() {
     CM_CONDITIONS.map((c) => ({ key: c.code, label: `${c.code} – ${c.label}` }))
   );
   buildCountryOptions();
+  buildLanguageOptions();
   buildLangOptions();
 
   chrome.storage.local.get(STORAGE_KEY, (res) => {
@@ -425,9 +506,24 @@ function init() {
     document.addEventListener("click", (e) => {
       if (!ms.contains(e.target)) closeCountryPanel();
       if (!$("langMs").contains(e.target)) closeLangPanel();
+      if (!$("languageMs").contains(e.target)) closeLanguagePanel();
     });
 
-    // Language picker dropdown behaviour.
+    // Card language multi-select dropdown behaviour.
+    const langMs2 = $("languageMs");
+    $("languageToggle").addEventListener("click", () => {
+      const open = langMs2.classList.toggle("open");
+      $("languagePanel").hidden = !open;
+      $("languageToggle").setAttribute("aria-expanded", String(open));
+      if (open) $("languageSearch").focus();
+    });
+    $("languageSearch").addEventListener("input", (e) => {
+      e.stopPropagation();
+      filterLanguageOptions(e.target.value);
+    });
+    $("languageOptions").addEventListener("change", updateLanguageLabel);
+
+    // Language picker dropdown behaviour (UI language).
     const langMs = $("langMs");
     $("langToggle").addEventListener("click", () => {
       const open = langMs.classList.toggle("open");

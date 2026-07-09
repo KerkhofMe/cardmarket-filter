@@ -75,6 +75,25 @@
     </section>
 
     <section>
+      <h2 data-i18n="cardLanguage">Card language</h2>
+      <div class="row">
+        <label><input type="radio" name="languageMode" value="allow" checked /> <span data-i18n="languageAllow">Show only these languages</span></label>
+        <label><input type="radio" name="languageMode" value="block" /> <span data-i18n="languageBlock">Hide these languages</span></label>
+      </div>
+      <div class="ms" id="languageMs">
+        <button type="button" class="ms-toggle" id="languageToggle" aria-haspopup="listbox" aria-expanded="false">
+          <span id="languageLabel">All languages</span>
+          <span class="ms-caret" aria-hidden="true"></span>
+        </button>
+        <div class="ms-panel" id="languagePanel" hidden>
+          <input type="text" class="ms-search" id="languageSearch" data-i18n-ph="searchLanguage" placeholder="Search language…" autocomplete="off" />
+          <div class="ms-options" id="languageOptions" role="listbox" aria-multiselectable="true"></div>
+        </div>
+      </div>
+      <small data-i18n="languageHint">Filter by card language (e.g., English, Japanese).</small>
+    </section>
+
+    <section>
       <div class="toggle-row">
         <div>
           <h2 data-i18n="sellerType">Seller type</h2>

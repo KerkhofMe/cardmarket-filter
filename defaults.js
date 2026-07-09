@@ -59,6 +59,22 @@ const CM_COUNTRIES = [
   { name: "United States", code: "US" }
 ];
 
+// Card languages that Cardmarket supports.
+const CM_CARD_LANGUAGES = [
+  "English",
+  "French",
+  "German",
+  "Spanish",
+  "Italian",
+  "Portuguese",
+  "Japanese",
+  "Korean",
+  "Chinese",
+  "Russian",
+  "Polish",
+  "Dutch"
+];
+
 const CM_DEFAULT_SETTINGS = {
   enabled: true,
   hideMode: "hide", // "hide" | "dim"
@@ -93,6 +109,12 @@ const CM_DEFAULT_SETTINGS = {
   // Card conditions to SHOW (list of condition codes). Empty list = show all.
   conditions: CM_CONDITIONS.map((c) => c.code),
 
+  // Card language filter.
+  cardLanguage: {
+    mode: "allow", // "block" = hide listed languages, "allow" = only show listed languages
+    list: [] // e.g. ["English", "Japanese"]. Empty = show all
+  },
+
   // Price filters (item price in the page currency, usually EUR).
   minPrice: null,
   maxPrice: null,
@@ -125,6 +147,7 @@ const CM_SELECTORS = {
   price: ".price-container, .color-primary, .fw-bold",
   itemCount: ".item-count, [class*=\"item-count\"], .amount",
   sellerSalesBadge: ".sell-count",
+  language: '.language-icon, [class*="language"], [aria-label*="Language"]',
   comment: '.product-comments, .product-comment, [class*="comment"]',
   // "Show more results" button that lazily loads additional offers.
   showMore: [
@@ -161,6 +184,7 @@ if (typeof globalThis !== "undefined") {
   globalThis.CM_CONDITIONS = CM_CONDITIONS;
   globalThis.CM_SELLER_TYPES = CM_SELLER_TYPES;
   globalThis.CM_COUNTRIES = CM_COUNTRIES;
+  globalThis.CM_CARD_LANGUAGES = CM_CARD_LANGUAGES;
   globalThis.CM_DEFAULT_SETTINGS = CM_DEFAULT_SETTINGS;
   globalThis.CM_SELECTORS = CM_SELECTORS;
   globalThis.CM_SHOW_MORE_PHRASES = CM_SHOW_MORE_PHRASES;

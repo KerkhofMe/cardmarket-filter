@@ -93,6 +93,7 @@
       sellerType: "",
       reputation: "",
       condition: "",
+      language: "",
       price: null,
       itemCount: null,
       salesCount: null,
@@ -149,6 +150,22 @@
         const codes = CM_CONDITIONS.map((c) => c.code);
         const found = codes.find((c) => raw.toUpperCase().includes(c));
         data.condition = found || raw.toUpperCase();
+      }
+    }
+
+    // Card language. Check language icon, tooltip, or class name.
+    const langEl = queryFirst(row, CM_SELECTORS.language.split(", "));
+    if (langEl) {
+      const langTitle = langEl.getAttribute("title") || langEl.getAttribute("aria-label") || "";
+      if (langTitle) {
+        // Extract language name from tooltip like "Language: English"
+        data.language = langTitle.includes(":")
+          ? langTitle.split(":").pop().trim()
+          : langTitle.trim();
+      } else {
+        // Fallback: try to extract from text content or class name
+        const langText = langEl.textContent.trim();
+        if (langText) data.language = langText;
       }
     }
 
@@ -222,6 +239,15 @@
     const condList = s.conditions || [];
     if (condList.length && data.condition) {
       if (!condList.includes(data.condition)) return true;
+    }
+
+    // Card language.
+    const langList = (s.cardLanguage?.list || []).map(normalize).filter(Boolean);
+    if (langList.length && data.language) {
+      const lang = normalize(data.language);
+      const inList = langList.some((x) => lang.includes(x) || x.includes(lang));
+      if (s.cardLanguage.mode === "allow" && !inList) return true;
+      if (s.cardLanguage.mode === "block" && inList) return true;
     }
 
     // Price.
