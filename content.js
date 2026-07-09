@@ -256,15 +256,21 @@
   }
 
   function setRowHidden(row, hidden) {
-    row.classList.remove("cmf-hidden", "cmf-dimmed");
-    if (!hidden) return;
+    row.classList.remove("cmf-hidden", "cmf-dimmed", "cmf-highlight");
+    if (!hidden) {
+      // In dim mode, highlight visible rows with yellow border
+      if (settings.hideMode === "dim") {
+        row.classList.add("cmf-highlight");
+      }
+      return;
+    }
     row.classList.add(settings.hideMode === "dim" ? "cmf-dimmed" : "cmf-hidden");
   }
 
   function showAll() {
     document
-      .querySelectorAll(".cmf-hidden, .cmf-dimmed")
-      .forEach((el) => el.classList.remove("cmf-hidden", "cmf-dimmed"));
+      .querySelectorAll(".cmf-hidden, .cmf-dimmed, .cmf-highlight")
+      .forEach((el) => el.classList.remove("cmf-hidden", "cmf-dimmed", "cmf-highlight"));
     updateBadge(0, 0);
   }
 
