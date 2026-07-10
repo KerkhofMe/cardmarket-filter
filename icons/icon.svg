@@ -1,16 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 128 128">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ef4444"/>
-      <stop offset="1" stop-color="#dc2626"/>
-    </linearGradient>
     <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
       <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
     </filter>
   </defs>
-
-  <!-- Background -->
-  <rect x="0" y="0" width="128" height="128" rx="28" fill="url(#bg)"/>
 
   <!-- Shopping cart -->
   <g filter="url(#shadow)">
