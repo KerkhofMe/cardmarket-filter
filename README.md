@@ -41,6 +41,25 @@ Settings are applied live (via `chrome.storage`) and re-evaluated on page change
 3. Click **Load unpacked** and select the `ChromeCardmarket` folder.
 4. Open a Cardmarket offer page and click the extension icon to configure filters.
 
+## Privacy & Security 🔒
+
+This extension is designed with **maximum privacy** in mind:
+
+- ✅ **Only works on cardmarket.com** – The extension can only access `*.cardmarket.com` pages, never other websites
+- ✅ **Minimal permissions** – Only uses `storage` permission for saving your filter preferences locally
+- ✅ **No tracking or analytics** – Zero data collection, no external requests
+- ✅ **No server communication** – All processing happens locally in your browser
+- ✅ **No access to** browsing history, cookies, downloads, or other tabs
+- ✅ **Settings stay on your device** – Your filter preferences are stored locally using Chrome's storage API
+
+**Verified in manifest.json:**
+```json
+"permissions": ["storage"],
+"host_permissions": ["*://*.cardmarket.com/*"]
+```
+
+Your privacy is protected – this extension cannot monitor, track, or access anything outside of Cardmarket pages.
+
 ## Files
 
 | File | Purpose |
